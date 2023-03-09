@@ -1,0 +1,131 @@
+# name: test_generate_alternatives_doesnt_delete_parts_of_the_graph
+  list([
+    Tree(('o', [('/', 'okay-04~2'), (':ARG1', ('c', [('/', 'comfortable-02~5'), (':ARG0', ('a', [('/', 'around~6'), (':op1', ('p', [('/', 'person~9'), (':ARG1-of', ('i', [('/', 'ill-01~8'), (':mod', ('m', [('/', 'mental~7')]))]))]))])), (':polarity', '-~10')])), (':domain', ('i2', [('/', 'it~0')]))])),
+    Tree(('o', [('/', 'okay-04~2'), (':ARG1', ('c', [('/', 'comfortable-02~5'), (':ARG0', ('a', [('/', 'aroundMERGED~6,7,8,9')])), (':polarity', '-~10')])), (':domain', ('i2', [('/', 'it~0')]))])),
+    Tree(('o', [('/', 'okay-04~2'), (':ARG1', ('c', [('/', 'comfortable-02~5'), (':ARG0', ('a', [('/', 'around~6'), (':op1', ('p', [('/', 'personMERGED~7,8,9')]))])), (':polarity', '-~10')])), (':domain', ('i2', [('/', 'it~0')]))])),
+    Tree(('o', [('/', 'okay-04~2'), (':ARG1', ('c', [('/', 'comfortable-02~5'), (':ARG0', ('a', [('/', 'around~6'), (':op1', ('p', [('/', 'person~9'), (':ARG1-of', ('i', [('/', 'ill-01MERGED~7,8')]))]))])), (':polarity', '-~10')])), (':domain', ('i2', [('/', 'it~0')]))])),
+  ])
+# ---
+# name: test_generate_merged_alternative_amrs_basic
+  list([
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thing~5'), (':mod', ('r', [('/', 'racist~8')]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4,5,8')])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01MERGED~4,5,8')]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thingMERGED~5,8')]))]))])),
+  ])
+# ---
+# name: test_generate_merged_alternative_amrs_can_merge_coreferences_if_specified
+  list([
+    Tree(('b1', [('/', 'blah~0'), (':ARG0', ('a', [('/', 'ablah~1'), (':ARG1', ('c', [('/', 'cblah~2')]))])), (':ARG1', 'c'), (':ARG2', ('s', [('/', 'sblah~3'), (':ARG1', ('t', [('/', 'tblah~4'), (':ARG0', 'c')]))]))])),
+    Tree(('b1', [('/', 'blahMERGED~0,1,2,3,4')])),
+    Tree(('b1', [('/', 'blah~0'), (':ARG0', ('a', [('/', 'ablahMERGED~1,2')])), (':ARG1', ('c', [('/', 'cblah~2')])), (':ARG2', ('s', [('/', 'sblah~3'), (':ARG1', ('t', [('/', 'tblah~4'), (':ARG0', 'c')]))]))])),
+    Tree(('b1', [('/', 'blah~0'), (':ARG0', ('a', [('/', 'ablah~1'), (':ARG1', ('c', [('/', 'cblah~2')]))])), (':ARG1', 'c'), (':ARG2', ('s', [('/', 'sblahMERGED~3,4')]))])),
+    Tree(('b1', [('/', 'blah~0'), (':ARG0', ('a', [('/', 'ablahMERGED~1,2')])), (':ARG1', ('c', [('/', 'cblah~2')])), (':ARG2', ('s', [('/', 'sblahMERGED~3,4')]))])),
+  ])
+# ---
+# name: test_generate_merged_alternative_amrs_cannot_merge_across_negation
+  list([
+    Tree(('b', [('/', 'good-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thing~5'), (':mod', ('r', [('/', 'racist~8')])), (':polarity', '-')]))]))])),
+    Tree(('b', [('/', 'good-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thingMERGED~5,8'), (':polarity', '-')]))]))])),
+  ])
+# ---
+# name: test_generate_merged_alternative_amrs_cannot_merge_across_negation_with_internal_merges
+  list([
+    Tree(('b', [('/', 'good-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thing~5'), (':mod', ('r', [('/', 'racist~8')])), (':polarity', '-')]))]))])),
+    Tree(('b', [('/', 'good-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thingMERGED~5,8'), (':polarity', '-')]))]))])),
+    Tree(('b', [('/', 'good-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thing~5'), (':mod', ('r', [('/', 'racist~8')])), (':polarity', '-')]))])),
+    Tree(('b', [('/', 'good-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thingMERGED~5,8'), (':polarity', '-')]))])),
+  ])
+# ---
+# name: test_generate_merged_alternative_amrs_generate_multiple_merges_in_the_same_output
+  list([
+    Tree(('b', [('/', 'blah~0'), (':ARG0', ('a', [('/', 'ablah~1'), (':ARG1', ('c', [('/', 'cblah~2')]))])), (':ARG1', ('s', [('/', 'sblah~3'), (':ARG1', ('t', [('/', 'tblah~4')]))]))])),
+    Tree(('b', [('/', 'blah~0'), (':ARG0', ('a', [('/', 'ablahMERGED~1,2')])), (':ARG1', ('s', [('/', 'sblah~3'), (':ARG1', ('t', [('/', 'tblah~4')]))]))])),
+    Tree(('b', [('/', 'blah~0'), (':ARG0', ('a', [('/', 'ablah~1'), (':ARG1', ('c', [('/', 'cblah~2')]))])), (':ARG1', ('s', [('/', 'sblahMERGED~3,4')]))])),
+    Tree(('b', [('/', 'blah~0'), (':ARG0', ('a', [('/', 'ablahMERGED~1,2')])), (':ARG1', ('s', [('/', 'sblahMERGED~3,4')]))])),
+  ])
+# ---
+# name: test_generate_merged_alternative_amrs_restricting_max_collapsed_per_node
+  list([
+    Tree(('r', [('/', 'reasonable-02~2'), (':ARG1', ('c', [('/', 'call-01~6'), (':ARG0', ('s', [('/', 'someone~4')])), (':ARG1', 's'), (':ARG2', ('p', [('/', 'person~7'), (':mod', ('c2', [('/', 'country~9'), (':name', ('n', [('/', 'name~9'), (':op1', '"America"~10')]))]))]))])), (':condition', ('b', [('/', 'be-from-91~15'), (':ARG1', 's'), (':ARG2', 'c2')]))])),
+    Tree(('r', [('/', 'reasonable-02~2'), (':ARG1', ('c', [('/', 'call-01~6'), (':ARG0', ('s', [('/', 'someone~4')])), (':ARG1', 's'), (':ARG2', ('p', [('/', 'person~7'), (':mod', ('c2', [('/', 'countryMERGED~9,10')]))]))])), (':condition', ('b', [('/', 'be-from-91~15'), (':ARG1', 's'), (':ARG2', 'c2')]))])),
+    Tree(('r', [('/', 'reasonable-02~2'), (':ARG1', ('c', [('/', 'call-01~6'), (':ARG0', ('s', [('/', 'someone~4')])), (':ARG1', 's'), (':ARG2', ('p', [('/', 'person~7'), (':mod', ('c2', [('/', 'country~9'), (':name', ('n', [('/', 'nameMERGED~9,10')]))]))]))])), (':condition', ('b', [('/', 'be-from-91~15'), (':ARG1', 's'), (':ARG2', 'c2')]))])),
+  ])
+# ---
+# name: test_generate_merged_alternative_amrs_with_complex_amr
+  list([
+    Tree(('r', [('/', 'reasonable-02~2'), (':ARG1', ('c', [('/', 'call-01~6'), (':ARG0', ('s', [('/', 'someone~4')])), (':ARG1', 's'), (':ARG2', ('p', [('/', 'person~7'), (':mod', ('c2', [('/', 'country~9'), (':name', ('n', [('/', 'name~9'), (':op1', '"America"~10')]))]))]))])), (':condition', ('b', [('/', 'be-from-91~15'), (':ARG1', 's'), (':ARG2', 'c2')]))])),
+    Tree(('r', [('/', 'reasonable-02MERGED~2,4,6,7,9,10,15')])),
+    Tree(('r', [('/', 'reasonable-02~2'), (':ARG1', ('c', [('/', 'call-01~6'), (':ARG0', ('s', [('/', 'someone~4')])), (':ARG1', 's'), (':ARG2', ('p', [('/', 'person~7'), (':mod', ('c2', [('/', 'countryMERGED~9,10')]))]))])), (':condition', ('b', [('/', 'be-from-91~15'), (':ARG1', 's'), (':ARG2', 'c2')]))])),
+    Tree(('r', [('/', 'reasonable-02~2'), (':ARG1', ('c', [('/', 'call-01~6'), (':ARG0', ('s', [('/', 'someone~4')])), (':ARG1', 's'), (':ARG2', ('p', [('/', 'person~7'), (':mod', ('c2', [('/', 'country~9'), (':name', ('n', [('/', 'nameMERGED~9,10')]))]))]))])), (':condition', ('b', [('/', 'be-from-91~15'), (':ARG1', 's'), (':ARG2', 'c2')]))])),
+  ])
+# ---
+# name: test_generate_merged_alternative_amrs_with_complex_amr_and_internal_merge
+  list([
+    Tree(('r', [('/', 'reasonable-02~2'), (':ARG1', ('c', [('/', 'call-01~6'), (':ARG0', ('s', [('/', 'someone~4')])), (':ARG1', 's'), (':ARG2', ('p', [('/', 'person~7'), (':mod', ('c2', [('/', 'country~9'), (':name', ('n', [('/', 'name~9'), (':op1', '"America"~10')]))]))]))])), (':condition', ('b', [('/', 'be-from-91~15'), (':ARG1', 's'), (':ARG2', 'c2')]))])),
+    Tree(('r', [('/', 'reasonable-02MERGED~2,4,6,7,9,10,15')])),
+    Tree(('r', [('/', 'reasonable-02~2'), (':ARG1', ('c', [('/', 'call-01~6'), (':ARG0', ('s', [('/', 'someone~4')])), (':ARG1', 's'), (':ARG2', ('p', [('/', 'person~7'), (':mod', ('c2', [('/', 'countryMERGED~9,10')]))]))])), (':condition', ('b', [('/', 'be-from-91~15'), (':ARG1', 's'), (':ARG2', 'c2')]))])),
+    Tree(('r', [('/', 'reasonable-02~2'), (':ARG1', ('c', [('/', 'call-01~6'), (':ARG0', ('s', [('/', 'someone~4')])), (':ARG1', 's'), (':ARG2', ('p', [('/', 'person~7'), (':mod', ('c2', [('/', 'country~9'), (':name', ('n', [('/', 'nameMERGED~9,10')]))]))]))])), (':condition', ('b', [('/', 'be-from-91~15'), (':ARG1', 's'), (':ARG2', 'c2')]))])),
+    Tree(('r', [('/', 'reasonable-02~2'), (':ARG1', ('c', [('/', 'call-01~6'), (':ARG0', ('s', [('/', 'someone~4')])), (':ARG1', 's'), (':ARG2', ('p', [('/', 'person~7'), (':mod', ('c2', [('/', 'countryMERGED~9'), (':op1', '"America"~10')]))]))])), (':condition', ('b', [('/', 'be-from-91~15'), (':ARG1', 's'), (':ARG2', 'c2')]))])),
+    Tree(('r', [('/', 'reasonable-02MERGED~2,6,15'), (':ARG0', ('s', [('/', 'someone~4')])), (':ARG1', 's'), (':ARG2', ('p', [('/', 'person~7'), (':mod', ('c2', [('/', 'country~9'), (':name', ('n', [('/', 'name~9'), (':op1', '"America"~10')]))]))])), (':ARG1', 's'), (':ARG2', 'c2')])),
+    Tree(('r', [('/', 'reasonable-02MERGED~2,6,15'), (':ARG0', ('s', [('/', 'someone~4')])), (':ARG1', 's'), (':ARG2', ('p', [('/', 'person~7'), (':mod', ('c2', [('/', 'countryMERGED~9,10')]))])), (':ARG1', 's'), (':ARG2', 'c2')])),
+    Tree(('r', [('/', 'reasonable-02MERGED~2,6,15'), (':ARG0', ('s', [('/', 'someone~4')])), (':ARG1', 's'), (':ARG2', ('p', [('/', 'person~7'), (':mod', ('c2', [('/', 'country~9'), (':name', ('n', [('/', 'nameMERGED~9,10')]))]))])), (':ARG1', 's'), (':ARG2', 'c2')])),
+    Tree(('r', [('/', 'reasonable-02MERGED~2,6,15'), (':ARG0', ('s', [('/', 'someone~4')])), (':ARG1', 's'), (':ARG2', ('p', [('/', 'person~7'), (':mod', ('c2', [('/', 'countryMERGED~9'), (':op1', '"America"~10')]))])), (':ARG1', 's'), (':ARG2', 'c2')])),
+  ])
+# ---
+# name: test_generate_merged_alternative_amrs_with_long_chain_and_internal_merges
+  list([
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thing~7'), (':ARG0', ('s3', [('/', 'say-01~8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4,5,6,7,8,9')])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01MERGED~4,5,6,7,8,9')]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thingMERGED~5,6,7,8,9')]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7,8,9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thingMERGED~7,8,9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thing~7'), (':ARG0', ('s3', [('/', 'say-01MERGED~8,9')]))]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thingMERGED~7,8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7'), (':ARG0', ('s3', [('/', 'say-01~8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7,8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thingMERGED~5,6'), (':ARG1', ('t2', [('/', 'thing~7'), (':ARG0', ('s3', [('/', 'say-01~8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thingMERGED~5,6,7'), (':ARG0', ('s3', [('/', 'say-01~8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01MERGED~4,5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thing~7'), (':ARG0', ('s3', [('/', 'say-01~8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01MERGED~4,5,6'), (':ARG1', ('t2', [('/', 'thing~7'), (':ARG0', ('s3', [('/', 'say-01~8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thing~7'), (':ARG0', ('s3', [('/', 'say-01~8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4,5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thing~7'), (':ARG0', ('s3', [('/', 'say-01~8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thingMERGED~5,6,7,8,9')]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01MERGED~4,5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7,8,9')]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7,8,9')]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4,5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7,8,9')]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thingMERGED~5,6'), (':ARG1', ('t2', [('/', 'thingMERGED~7,8,9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01MERGED~4,5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thingMERGED~7,8,9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01MERGED~4,5,6'), (':ARG1', ('t2', [('/', 'thingMERGED~7,8,9')]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thingMERGED~7,8,9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4,5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thingMERGED~7,8,9')]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7'), (':ARG0', ('s3', [('/', 'say-01MERGED~8,9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thingMERGED~5,6'), (':ARG1', ('t2', [('/', 'thing~7'), (':ARG0', ('s3', [('/', 'say-01MERGED~8,9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thingMERGED~5,6,7'), (':ARG0', ('s3', [('/', 'say-01MERGED~8,9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01MERGED~4,5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thing~7'), (':ARG0', ('s3', [('/', 'say-01MERGED~8,9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01MERGED~4,5,6'), (':ARG1', ('t2', [('/', 'thing~7'), (':ARG0', ('s3', [('/', 'say-01MERGED~8,9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thing~7'), (':ARG0', ('s3', [('/', 'say-01MERGED~8,9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4,5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thing~7'), (':ARG0', ('s3', [('/', 'say-01MERGED~8,9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01~4'), (':ARG1', ('t', [('/', 'thingMERGED~5,6'), (':ARG1', ('t2', [('/', 'thingMERGED~7,8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01MERGED~4,5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thingMERGED~7,8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01MERGED~4,5,6'), (':ARG1', ('t2', [('/', 'thingMERGED~7,8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thingMERGED~7,8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4,5'), (':ARG0', ('s2', [('/', 'say-01~6'), (':ARG1', ('t2', [('/', 'thingMERGED~7,8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01MERGED~4,5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7'), (':ARG0', ('s3', [('/', 'say-01~8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7'), (':ARG0', ('s3', [('/', 'say-01~8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4,5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7'), (':ARG0', ('s3', [('/', 'say-01~8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01MERGED~4,5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7,8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7,8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4,5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7,8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thingMERGED~5,6'), (':ARG1', ('t2', [('/', 'thing~7'), (':ARG0', ('s3', [('/', 'say-01~8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thingMERGED~5,6,7'), (':ARG0', ('s3', [('/', 'say-01~8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thingMERGED~5,6'), (':ARG1', ('t2', [('/', 'thingMERGED~7,8,9')]))]))])),
+    Tree(('b', [('/', 'bad-07~2'), (':ARG1', ('s', [('/', 'say-01MERGED~4,5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7'), (':ARG0', ('s3', [('/', 'say-01MERGED~8,9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thing~5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7'), (':ARG0', ('s3', [('/', 'say-01MERGED~8,9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4,5'), (':ARG0', ('s2', [('/', 'say-01MERGED~6,7'), (':ARG0', ('s3', [('/', 'say-01MERGED~8,9')]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thingMERGED~5,6'), (':ARG1', ('t2', [('/', 'thing~7'), (':ARG0', ('s3', [('/', 'say-01MERGED~8,9')]))]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thingMERGED~5,6,7'), (':ARG0', ('s3', [('/', 'say-01MERGED~8,9')]))]))])),
+    Tree(('b', [('/', 'bad-07MERGED~2,4'), (':ARG1', ('t', [('/', 'thingMERGED~5,6'), (':ARG1', ('t2', [('/', 'thingMERGED~7,8'), (':ARG1', ('t3', [('/', 'thing~9')]))]))]))])),
+  ])
+# ---
